@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-refresh_tokens-table__create-table
+      author: popipopka
+      changes:
+        - createTable:
+            tableName: refresh_tokens
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: true
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: token_hash
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expires_at
+                  type: timestamptz
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: refresh_tokens
+
+  - changeSet:
+      id: create-refresh_tokens-table__add-fk
+      author: popipopka
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: refresh_tokens
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_refresh_tokens_users
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: refresh_tokens
+            constraintName: fk_refresh_tokens_users
+
+  - changeSet:
+      id: create-refresh_tokens-table__add-uq
+      author: popipopka
+      changes:
+        - addUniqueConstraint:
+            tableName: refresh_tokens
+            columnNames: user_id, client_id
+            constraintName: uq_user_id_client_id
