@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 05-fill-roles-table__fill-in-data
+      author: popipopka
+      changes:
+        - sql:
+            sql: insert into roles (name) values ('ROLE_USER')
+
+      rollback:
+        - sql:
+            sql: delete from roles where name in ('ROLE_USER');
