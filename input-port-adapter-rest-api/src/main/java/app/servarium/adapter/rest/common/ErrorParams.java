@@ -1,4 +1,4 @@
-package app.servarium.adapter.port.input.spring.web.common;
+package app.servarium.adapter.rest.common;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.WebRequest;

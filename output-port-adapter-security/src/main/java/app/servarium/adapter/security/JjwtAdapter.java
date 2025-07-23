@@ -25,6 +25,7 @@ public class JjwtAdapter implements TokenProvider {
     private PublicKey refreshPublicKey;
 
     private PrivateKey accessPrivateKey;
+    private PublicKey accessPublicKey;
 
     @PostConstruct
     private void init() {
@@ -32,6 +33,7 @@ public class JjwtAdapter implements TokenProvider {
         this.refreshPublicKey = RsaUtils.generatePublicKey(jwtProperties.refreshPublicKey());
 
         this.accessPrivateKey = RsaUtils.generatePrivateKey(jwtProperties.accessPrivateKey());
+        this.accessPublicKey = RsaUtils.generatePublicKey(jwtProperties.accessPublicKey());
     }
 
     @Override
@@ -71,6 +73,16 @@ public class JjwtAdapter implements TokenProvider {
         }
     }
 
+    @Override
+    public boolean isAccessTokenValid(String token) {
+        try {
+            parseToken(token, accessPublicKey);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
+    }
+
     private void parseToken(String token, PublicKey publicKey) {
         Jwts.parser()
                 .verifyWith(publicKey)
@@ -82,6 +94,17 @@ public class JjwtAdapter implements TokenProvider {
     public long getRefreshTokenSubject(String token) {
         String sub = extractClaims(token, refreshPublicKey, Claims::getSubject);
         return Long.parseLong(sub);
+    }
+
+    @Override
+    public long getAccessTokenSubject(String token) {
+        String sub = extractClaims(token, accessPublicKey, Claims::getSubject);
+        return Long.parseLong(sub);
+    }
+
+    @Override
+    public String getRoleFromAccessToken(String token) {
+        return extractClaims(token, accessPublicKey, claims -> claims.get("role", String.class));
     }
 
     @Override

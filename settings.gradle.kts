@@ -5,6 +5,6 @@ include(
     "core",
     "input-port-adapter-rest-api",
     "output-port-adapter-persistence",
+    "output-port-adapter-security",
     "app-spring-boot"
 )
-include("output-port-adapter-security")

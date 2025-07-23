@@ -1,4 +1,4 @@
-package app.servarium.adapter.port.input.spring.web.request;
+package app.servarium.adapter.rest.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

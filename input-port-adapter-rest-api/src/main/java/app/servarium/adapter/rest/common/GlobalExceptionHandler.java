@@ -1,5 +1,6 @@
-package app.servarium.adapter.port.input.spring.web.common;
+package app.servarium.adapter.rest.common;
 
+import app.servarium.adapter.rest.dto.response.ErrorResponse;
 import app.servarium.domain.shared.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handle(MethodArgumentNotValidException e, WebRequest r) {
-        List<FieldConstraintViolation> violations = e.getFieldErrors()
+        List<ConstraintViolation> violations = e.getFieldErrors()
                 .stream()
                 .map(error ->
-                        FieldConstraintViolation.of(error.getField(), error.getDefaultMessage()
+                        ConstraintViolation.of(error.getField(), error.getDefaultMessage()
                 ))
                 .toList();
 

@@ -1,4 +1,4 @@
-package app.servarium.adapter.port.input.spring.web.config;
+package app.servarium.adapter.rest.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
