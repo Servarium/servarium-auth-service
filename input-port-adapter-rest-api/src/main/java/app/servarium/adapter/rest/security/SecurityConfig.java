@@ -43,7 +43,7 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(PRIVATE).hasRole("ADMIN")
+                        .requestMatchers(PRIVATE).hasRole("USER")
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, AuthorizationFilter.class)
