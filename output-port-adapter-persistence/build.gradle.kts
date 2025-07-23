@@ -8,4 +8,6 @@ dependencies {
     implementation("org.projectlombok:lombok-mapstruct-binding")
 
     annotationProcessor("org.mapstruct:mapstruct-processor")
+
+    runtimeOnly("org.postgresql:postgresql")
 }

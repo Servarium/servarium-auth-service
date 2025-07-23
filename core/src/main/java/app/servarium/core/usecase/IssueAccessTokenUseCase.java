@@ -8,7 +8,6 @@ import app.servarium.domain.port.output.security.TokenEncoder;
 import app.servarium.domain.port.output.security.TokenProvider;
 import app.servarium.domain.shared.exception.AuthenticationException;
 import app.servarium.domain.shared.params.IssueAccessTokenParams;
-import app.servarium.domain.shared.result.AccessTokenData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ public class IssueAccessTokenUseCase implements IssueAccessTokenInputPort {
 
     @Override
     @Transactional
-    public AccessTokenData execute(IssueAccessTokenParams params) {
+    public String execute(IssueAccessTokenParams params) {
         String refreshToken = params.getRefreshToken();
         String clientId = params.getClientId();
         log.info("Attempting to issue access token - client: {}", clientId);
@@ -38,7 +37,7 @@ public class IssueAccessTokenUseCase implements IssueAccessTokenInputPort {
         String newAccessToken = tokenProvider.generateAccessToken(user);
 
         log.info("Access token issue is successful - User: {}, client: {}", user.getId(), clientId);
-        return AccessTokenData.of(newAccessToken);
+        return newAccessToken;
     }
 
     private RefreshToken findSavedRefreshToken(String refreshToken, String clientId) {

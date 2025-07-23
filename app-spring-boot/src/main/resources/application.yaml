@@ -23,3 +23,12 @@ spring:
 
       leak-detection-threshold: 10_000
       auto-commit: false
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger
+    display-request-duration: true
+    filter: true
+    operations-sorter: method

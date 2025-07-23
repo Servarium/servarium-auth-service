@@ -1,6 +1,6 @@
-package app.servarium.adapter.port.input.spring.web.common;
+package app.servarium.adapter.rest.common;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import app.servarium.adapter.rest.dto.response.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ResponseEntityFactory {
-    private final ObjectMapper objectMapper;
     private final MessageSource messageSource;
 
     public ResponseEntity<ErrorResponse> create(ErrorParams em) {

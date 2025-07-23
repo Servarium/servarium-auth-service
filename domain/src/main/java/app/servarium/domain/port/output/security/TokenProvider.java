@@ -11,7 +11,13 @@ public interface TokenProvider {
 
     boolean isRefreshTokenValid(String token);
 
+    boolean isAccessTokenValid(String token);
+
     long getRefreshTokenSubject(String token);
+
+    long getAccessTokenSubject(String token);
+
+    String getRoleFromAccessToken(String token);
 
     Instant getRefreshTokenExpiresAt(String token);
 }

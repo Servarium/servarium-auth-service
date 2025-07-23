@@ -1,18 +1,20 @@
-package app.servarium.adapter.port.input.spring.web;
+package app.servarium.adapter.rest;
 
-import app.servarium.adapter.port.input.spring.web.request.IssueAccessTokenRequest;
-import app.servarium.adapter.port.input.spring.web.request.LoginRequest;
-import app.servarium.adapter.port.input.spring.web.request.LogoutRequest;
-import app.servarium.adapter.port.input.spring.web.request.RegisterRequest;
-import app.servarium.domain.shared.result.AccessTokenData;
+import app.servarium.adapter.rest.dto.request.IssueAccessTokenRequest;
+import app.servarium.adapter.rest.dto.request.LoginRequest;
+import app.servarium.adapter.rest.dto.request.LogoutRequest;
+import app.servarium.adapter.rest.dto.request.RegisterRequest;
+import app.servarium.adapter.rest.dto.response.TokensResponse;
 import app.servarium.domain.shared.result.TokensData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,21 +51,21 @@ public interface AuthRestApi {
             }
     )
     @PostMapping(value = "/login")
-    ResponseEntity<TokensData> login(@Valid @RequestBody LoginRequest request);
+    ResponseEntity<TokensResponse> login(@Valid @RequestBody LoginRequest request);
 
     @Operation(
             summary = "Получение нового JWT токена доступа",
             description = "Получение нового JWT токена доступа токена, используя JWT refresh токен",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Новый JWT access токен",
-                            content = @Content(schema = @Schema(implementation = AccessTokenData.class))
-                    ),
-                    @ApiResponse(responseCode = "400", description = "a001 - Неверные данные запроса", content = @Content),
-                    @ApiResponse(responseCode = "401", description = "a010 - Ошибка аутентификации", content = @Content)
+                    @ApiResponse(responseCode = "200", description = "Новый JWT access токен"),
+                    @ApiResponse(responseCode = "400", description = "a001 - Неверные данные запроса",
+                            content = @Content),
+                    @ApiResponse(responseCode = "401", description = "a010 - Ошибка аутентификации",
+                            content = @Content)
             }
     )
     @PostMapping(value = "/token")
-    ResponseEntity<AccessTokenData> issueAccessToken(@Valid @RequestBody IssueAccessTokenRequest request);
+    ResponseEntity<String> issueAccessToken(@Valid @RequestBody IssueAccessTokenRequest request);
 
     @Operation(
             summary = "Выход пользователя",
@@ -72,8 +74,9 @@ public interface AuthRestApi {
                     @ApiResponse(responseCode = "200", description = "Успешный выход"),
                     @ApiResponse(responseCode = "400", description = "a001 - Неверные данные запроса"),
                     @ApiResponse(responseCode = "404", description = "a012 - Сессия не найдена"),
-            }
+            },
+            security = @SecurityRequirement(name = "JWT")
     )
     @PostMapping(value = "/logout")
-    ResponseEntity<Void> logout(@Valid @RequestBody LogoutRequest request);
+    ResponseEntity<Void> logout(@AuthenticationPrincipal long userId, @Valid @RequestBody LogoutRequest request);
 }

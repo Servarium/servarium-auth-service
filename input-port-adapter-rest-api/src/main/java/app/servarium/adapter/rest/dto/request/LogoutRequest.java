@@ -1,4 +1,4 @@
-package app.servarium.adapter.port.input.spring.web.request;
+package app.servarium.adapter.rest.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -13,9 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Schema(description = "Запрос на выход пользователя из системы")
 public class LogoutRequest {
-
-    @Schema(description = "Идентификатор пользователя", example = "123")
-    private long userId;
 
     @NotBlank
     @Schema(description = "Идентификатор устройства", example = "client-12345")
